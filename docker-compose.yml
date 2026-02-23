@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  bot:
+    build: .
+    container_name: discord-bot-dashboard
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "${DASHBOARD_PORT:-3000}:3000"
+    volumes:
+      # Persistance des données (config, xp, tickets)
+      - ./data:/app/data
+    environment:
+      - NODE_ENV=production

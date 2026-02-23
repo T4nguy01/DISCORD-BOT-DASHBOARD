@@ -1,0 +1,21 @@
+{
+  "name": "discord-slash-bot",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "deploy": "node deploy-commands.js"
+  },
+  "dependencies": {
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
+    "axios": "^1.13.5",
+    "canvas": "^3.2.1",
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fluent-ffmpeg": "^2.1.3",
+    "form-data": "^4.0.5",
+    "node-cron": "^4.2.1"
+  }
+}
