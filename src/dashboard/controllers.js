@@ -1,6 +1,7 @@
 const configStore = require("../core/config-store");
 const telemetry = require("../core/telemetry");
-const { ChannelType } = require("discord.js");
+const xpStore = require("../core/xp-store");
+const { ChannelType, PermissionsBitField } = require("discord.js");
 
 function isGuildId(value) {
     return /^\d{17,20}$/.test(String(value || ""));
@@ -136,12 +137,110 @@ module.exports = (client) => ({
         const guild = client.guilds.cache.get(guildId);
         if (!guild) return res.status(404).json({ error: "Guild not found." });
 
+        // Get bot's highest role for hierarchy check
+        const botMember = guild.members.me;
+        const botHighest = botMember.roles.highest.position;
+
         const roles = guild.roles.cache
             .filter(r => r.id !== guildId && !r.managed)
-            .map(r => ({ id: r.id, name: r.name }))
-            .sort((a, b) => a.name.localeCompare(b.name));
+            .map(r => ({
+                id: r.id,
+                name: r.name,
+                color: r.hexColor,
+                position: r.position,
+                hoist: r.hoist,
+                permissions: Array.from(r.permissions),
+                editable: r.position < botHighest && botMember.permissions.has(PermissionsBitField.Flags.ManageRoles)
+            }))
+            .sort((a, b) => b.position - a.position);
 
         res.json({ roles });
+    },
+
+    createRole: async (req, res) => {
+        const { guildId } = req.params;
+        const { name, color, hoist } = req.body;
+        const guild = client.guilds.cache.get(guildId);
+        if (!guild) return res.status(404).json({ error: "Guild not found." });
+
+        try {
+            const role = await guild.roles.create({
+                name: name || "Nouveau Rôle",
+                color: color || "#99aab5",
+                hoist: Boolean(hoist),
+                reason: "Créé via Dashboard"
+            });
+            res.json({ ok: true, role: { id: role.id, name: role.name } });
+        } catch (e) {
+            res.status(500).json({ error: e.message });
+        }
+    },
+
+    updateRole: async (req, res) => {
+        const { guildId, roleId } = req.params;
+        const { name, color, hoist } = req.body;
+        const guild = client.guilds.cache.get(guildId);
+        if (!guild) return res.status(404).json({ error: "Guild not found." });
+
+        const role = guild.roles.cache.get(roleId);
+        if (!role) return res.status(404).json({ error: "Role not found." });
+
+        try {
+            const updated = await role.edit({
+                name: name !== undefined ? name : role.name,
+                color: color !== undefined ? color : role.color,
+                hoist: hoist !== undefined ? Boolean(hoist) : role.hoist,
+                reason: "Modifié via Dashboard"
+            });
+            res.json({ ok: true, role: { id: updated.id, name: updated.name } });
+        } catch (e) {
+            res.status(500).json({ error: e.message });
+        }
+    },
+
+    deleteRole: async (req, res) => {
+        const { guildId, roleId } = req.params;
+        const guild = client.guilds.cache.get(guildId);
+        if (!guild) return res.status(404).json({ error: "Guild not found." });
+
+        const role = guild.roles.cache.get(roleId);
+        if (!role) return res.status(404).json({ error: "Role not found." });
+
+        try {
+            await role.delete("Supprimé via Dashboard");
+            res.json({ ok: true });
+        } catch (e) {
+            res.status(500).json({ error: e.message });
+        }
+    },
+
+    getLeaderboard: async (req, res) => {
+        const { guildId } = req.params;
+        if (!isGuildId(guildId)) return res.status(400).json({ error: "Invalid guildId." });
+
+        const guild = client.guilds.cache.get(guildId);
+        if (!guild) return res.status(404).json({ error: "Guild not found." });
+
+        const rawLeaderboard = xpStore.getLeaderboard(guildId, 50);
+
+        // Enrich with user names/avatars
+        const leaderboard = await Promise.all(rawLeaderboard.map(async (entry, index) => {
+            try {
+                const member = await guild.members.fetch(entry.userId).catch(() => null);
+                return {
+                    rank: index + 1,
+                    userId: entry.userId,
+                    name: member ? member.displayName : "Membre parti",
+                    avatar: member ? member.user.displayAvatarURL({ size: 64 }) : null,
+                    xp: entry.xp,
+                    level: entry.level
+                };
+            } catch {
+                return { ...entry, rank: index + 1, name: "Inconnu", avatar: null };
+            }
+        }));
+
+        res.json({ leaderboard });
     },
 
     getCategories: (req, res) => {

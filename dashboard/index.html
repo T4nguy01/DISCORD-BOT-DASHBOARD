@@ -20,6 +20,7 @@
     }
 
     :root {
+      /* Dark (Default) */
       --bg: #03070c;
       --bg1: #060d1b;
       --surf: rgba(11, 21, 37, .4);
@@ -40,6 +41,20 @@
       --rs: 12px;
       --tr: .3s cubic-bezier(.4, 0, .2, 1);
       --glow: 0 0 20px rgba(99, 102, 241, .2);
+    }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --bg1: #ffffff;
+      --surf: rgba(255, 255, 255, .8);
+      --surfs: rgba(255, 255, 255, 1);
+      --line: rgba(0, 0, 0, .05);
+      --lines: rgba(0, 0, 0, .1);
+      --text: #1e293b;
+      --muted: #64748b;
+      --brand: #4f46e5;
+      --brand2: #7c3aed;
+      --glow: 0 0 20px rgba(79, 70, 229, .15);
     }
 
     html {
@@ -281,6 +296,25 @@
       to {
         transform: rotate(360deg)
       }
+    }
+
+    .theme-switcher {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surf);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      cursor: pointer;
+      color: var(--text);
+      transition: var(--tr);
+    }
+
+    .theme-switcher:hover {
+      background: var(--lines);
+      transform: scale(1.05);
     }
 
     .cmd-cat-title {
@@ -1097,6 +1131,201 @@
       background: rgba(240, 78, 106, .14);
       color: var(--err);
     }
+
+    /* Leaderboard Styles */
+    .lb-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .lb-item {
+      display: flex;
+      align-items: center;
+      padding: 14px 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--line);
+      border-radius: var(--rs);
+      transition: all 0.4s var(--tr);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lb-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--lines);
+      transform: translateX(8px) scale(1.01);
+      box-shadow: -10px 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .lb-item::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--brand);
+      opacity: 0;
+      transition: var(--tr);
+    }
+
+    .lb-item:hover::after {
+      opacity: 1;
+    }
+
+    .lb-rank {
+      width: 40px;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--muted);
+    }
+
+    .lb-rank.top-1 {
+      color: #ffd700;
+      font-size: 24px;
+    }
+
+    .lb-rank.top-2 {
+      color: #c0c0c0;
+      font-size: 20px;
+    }
+
+    .lb-rank.top-3 {
+      color: #cd7f32;
+      font-size: 19px;
+    }
+
+    .lb-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      margin: 0 15px;
+      border: 2px solid var(--line);
+    }
+
+    .lb-info {
+      flex: 1;
+    }
+
+    .lb-name {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .lb-meta {
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      gap: 15px;
+      margin-top: 2px;
+    }
+
+    .lb-xp-bar-wrap {
+      width: 120px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .lb-xp-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand), var(--cyan));
+    }
+
+    /* Modal Styles */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: var(--bg1);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      width: 100%;
+      max-width: 450px;
+      overflow: hidden;
+      animation: modalIn 0.4s var(--tr);
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-head {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-head h2 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-foot {
+      padding: 15px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      border-top: 1px solid var(--line);
+    }
+
+    .role-action-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: var(--surf);
+      cursor: pointer;
+      transition: var(--tr);
+    }
+
+    .role-action-btn:hover {
+      background: var(--lines);
+      transform: scale(1.1);
+    }
+
+    .role-action-btn.del:hover {
+      color: var(--err);
+      border-color: var(--err);
+    }
   </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
@@ -1118,6 +1347,7 @@
       <div class="nav-sec">Principal</div>
       <div class="nav-item active" data-page="overview"><i class="ico fas fa-chart-line"></i> Vue d'ensemble</div>
       <div class="nav-item" data-page="events"><i class="ico fas fa-bolt"></i> Événements</div>
+      <div class="nav-item" data-page="leaderboard"><i class="ico fas fa-trophy"></i> Classement</div>
 
       <div class="nav-sec">Configuration</div>
       <div class="nav-item" data-page="settings"><i class="ico fas fa-cogs"></i> Général</div>
@@ -1156,7 +1386,10 @@
         </div>
       </div>
 
-      <div class="tb-pills">
+      <div class="tb-pills" style="display: flex; align-items: center; gap: 15px;">
+        <div class="theme-switcher" onclick="rotateTheme()" title="Changer de thème">
+          <i class="fas fa-moon" id="theme-icon"></i>
+        </div>
         <div class="pill"><span class="pill-lbl">UPTIME:</span> <span id="uptime">0h 0m</span></div>
         <div class="pill"><span class="pill-lbl">SUM:</span> <span id="totalInteraction">0</span></div>
       </div>
@@ -1416,6 +1649,16 @@
           </div>
         </div>
       </div>
+      <h3 class="section-title"><i class="fas fa-hammer"></i> Gestionnaire de Rôles</h3>
+      <div class="card">
+        <div class="btn-row" style="margin-bottom: 15px;">
+          <button class="btn-primary" onclick="openRoleModal()"><i class="fas fa-plus"></i> Créer un nouveau
+            rôle</button>
+        </div>
+        <div id="roleManagerList" class="ilist" style="gap: 10px;">
+          <div class="empty">Chargement du gestionnaire...</div>
+        </div>
+      </div>
     </div>
 
     <!-- Page: Tickets -->
@@ -1487,6 +1730,57 @@
       </div>
     </div>
 
+    <!-- Page: Leaderboard -->
+    <div class="page" id="pg-leaderboard">
+      <div class="ph">
+        <h1>Classement Européen</h1>
+        <p>Les membres les plus actifs de la communauté.</p>
+      </div>
+      <div class="card">
+        <div class="lb-grid" id="lbGrid">
+          <div class="empty">Sélectionnez un serveur pour voir le classement.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Role Edit Modal -->
+    <div id="roleModal" class="modal-bg" style="display:none">
+      <div class="modal-card">
+        <div class="modal-head">
+          <h2 id="roleModalTitle">Créer un rôle</h2>
+          <button class="modal-close" onclick="closeRoleModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editRoleId">
+          <div class="field">
+            <label>Nom du rôle</label>
+            <input type="text" id="roleNameInput" placeholder="ex: Modérateur">
+          </div>
+          <div class="field">
+            <label>Couleur (Hex)</label>
+            <div style="display:flex; gap:10px; align-items:center">
+              <input type="color" id="roleColorInput" style="width:50px; height:40px; padding:2px">
+              <input type="text" id="roleColorHex" placeholder="#ffffff" style="flex:1"
+                oninput="$('roleColorInput').value=this.value">
+            </div>
+          </div>
+          <div class="field">
+            <label class="toggle-wrap">
+              <div class="tlbl">Afficher séparément des autres membres</div>
+              <label class="toggle">
+                <input type="checkbox" id="roleHoistInput">
+                <span class="track"></span>
+              </label>
+            </label>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn-ghost" onclick="closeRoleModal()">Annuler</button>
+          <button class="btn-primary" id="btn-save-role-action" onclick="saveRoleAction()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+
     <!-- SVG Gradients -->
     <svg width="0" height="0" style="position:absolute">
       <defs>
@@ -1505,6 +1799,39 @@
       const $ = id => document.getElementById(id);
       let allRoles = [];
       let selectedRoles = [];
+
+      // Theme Management
+      const THEMES = ["dark", "light", "system"];
+      let currentThemeIdx = 0;
+
+      function applyTheme(theme) {
+        const icon = $("theme-icon");
+        document.documentElement.setAttribute("data-theme", theme === "system" ? (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark") : theme);
+
+        if (theme === "dark") {
+          icon.className = "fas fa-moon";
+        } else if (theme === "light") {
+          icon.className = "fas fa-sun";
+        } else {
+          icon.className = "fas fa-desktop";
+        }
+        localStorage.setItem("dashboard-theme", theme);
+      }
+
+      function rotateTheme() {
+        currentThemeIdx = (currentThemeIdx + 1) % THEMES.length;
+        applyTheme(THEMES[currentThemeIdx]);
+      }
+
+      // Init Theme
+      const savedTheme = localStorage.getItem("dashboard-theme") || "system";
+      currentThemeIdx = THEMES.indexOf(savedTheme);
+      applyTheme(savedTheme);
+
+      // Listen for system theme changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+        if (THEMES[currentThemeIdx] === "system") applyTheme("system");
+      });
 
       // Toasts
       function toast(msg, type = "info") {
@@ -1545,9 +1872,14 @@
           document.querySelectorAll(".nav-item").forEach(x => x.classList.remove("active"));
           el.classList.add("active");
           document.querySelectorAll(".page").forEach(x => x.classList.remove("active"));
-          const pid = "pg-" + el.dataset.page;
+          const page = el.dataset.page;
+          const pid = "pg-" + page;
           if ($(pid)) $(pid).classList.add("active");
           $("pageTitle").textContent = el.textContent.trim();
+
+          if (page === "leaderboard") loadLeaderboard();
+          if (page === "roles") loadRoles();
+
           if (window.innerWidth <= 768) $("sidebar").classList.remove("open");
         });
       });
@@ -1615,6 +1947,7 @@
       async function loadCommands() {
         const gid = $("guildServers").value;
         if (!gid) return;
+
         async function loadChannels(guildId) {
           try {
             const { channels } = await api(`/api/guild-channels/${guildId}`);
@@ -1632,78 +1965,86 @@
           }
         }
 
-        async function sendAnnounce() {
-          const guildId = $("guildServers").value;
-          const channelId = $("announceChannel").value;
-          const message = $("announceText").value;
-
-          if (!guildId) return toast("Sélectionnez un serveur.", "err");
-          if (!channelId) return toast("Sélectionnez un salon.", "err");
-          if (!message.trim()) return toast("Écrivez un message.", "err");
-
-          setLoading("btn-announce", true);
-          try {
-            await api("/api/announce", "POST", { guildId, channelId, message });
-            toast("Annonce envoyée !", "ok");
-            $("announceText").value = "";
-          } catch (e) {
-            toast("Erreur d'envoi.", "err");
-          } finally {
-            setLoading("btn-announce", false);
-          }
-        }
         try {
-          const { commands } = await api("/api/command-config/" + gid);
+          // 1. Parallel fetch of core data
+          const [cmdRes, rolesRes, configRes, catRes] = await Promise.all([
+            api("/api/command-config/" + gid),
+            api("/api/guild-roles/" + gid),
+            api("/api/guild-config/" + gid),
+            api("/api/guild-categories/" + gid)
+          ]);
+
+          const { commands } = cmdRes;
+          const { roles } = rolesRes;
+          const { config } = configRes;
+          const { categories } = catRes;
+
+          // 2. Render Commands
           renderCommands(commands);
 
+          // 3. Load Channels
           await loadChannels(gid);
 
+          // 4. Handle Roles UI
           allRoles = roles;
           renderSelfRoles(roles, config.selfRoles || []);
 
-          const { categories } = await api("/api/guild-categories/" + gid);
-          const catOps = '<option value="">Sélectionner une catégorie</option>' + categories.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
-          $("ticketCategory").innerHTML = catOps;
-
-          $("selfRoles").innerHTML = roleOps.replace('Aucun', 'Sélectionner les rôles');
-
-          $("autoRole").innerHTML = '<option value="">Aucun</option>' + roles.map(r => `<option value="${r.id}">${r.name}</option>`).join("");
-          $("autoRole").value = config.autoRoleId || "";
-
-          // Re-populate standard role selectors
           const roleOps = '<option value="">Aucun</option>' + roles.map(r => `<option value="${r.id}">${r.name}</option>`).join("");
-          ["activeRole", "inactiveRole", "ticketSupportRole"].forEach(id => {
+          ["activeRole", "inactiveRole", "ticketSupportRole", "autoRole"].forEach(id => {
             const el = $(id);
-            if (el) { el.innerHTML = roleOps; el.value = config[id + "Id"] || config[id.replace("Role", "RoleId")] || ""; }
+            if (el) {
+              el.innerHTML = roleOps;
+              // Map config property names back to IDs
+              const prop = id === "autoRole" ? "autoRoleId" : (id + "Id");
+              el.value = config[prop] || "";
+            }
           });
 
-          const { config } = await api("/api/guild-config/" + gid);
+          // 5. Handle Categories UI
+          const catOps = '<option value="">Sélectionner une catégorie</option>' + categories.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
+          if ($("ticketCategory")) {
+            $("ticketCategory").innerHTML = catOps;
+            $("ticketCategory").value = config.ticketCategoryId || "";
+          }
+
+          // 6. Populate other fields
           $("welcomeChannel").value = config.welcomeChannel || "";
           $("byeChannel").value = config.byeChannel || "";
           $("levelChannel").value = config.levelChannel || "";
           $("logChannel").value = config.logChannelId || "";
-          $("activeRole").value = config.activeRoleId || "";
-          $("inactiveRole").value = config.inactiveRoleId || "";
           $("inactivityDays").value = config.inactivityDays || 7;
-          $("ticketCategory").value = config.ticketCategoryId || "";
-          $("ticketSupportRole").value = config.ticketSupportRoleId || "";
           $("ticketTranscriptChannel").value = config.ticketTranscriptChannelId || "";
-          $("autoRole").value = config.autoRoleId || "";
           $("autoRoleToggle").checked = config.autoRoleEnabled || false;
           $("autoRoleStatus").textContent = config.autoRoleEnabled ? "Activé" : "Désactivé";
           $("announceChannel").value = config.announceChannelId || "";
           $("welcomeMessage").value = config.welcomeMessage || "";
           $("byeMessage").value = config.byeMessage || "";
 
-
-          // Populate multi-select for selfRoles
-          const selfRolesVal = config.selfRoles || [];
-          [...$("selfRoles").options].forEach(opt => {
-            opt.selected = selfRolesVal.includes(opt.value);
-          });
           toast("Configuration chargée.", "ok");
         } catch (e) {
+          console.error("loadCommands main error", e);
           toast("Erreur d'accès API.", "err");
+        }
+      }
+
+      async function sendAnnounce() {
+        const guildId = $("guildServers").value;
+        const channelId = $("announceChannel").value;
+        const message = $("announceText").value;
+
+        if (!guildId) return toast("Sélectionnez un serveur.", "err");
+        if (!channelId) return toast("Sélectionnez un salon.", "err");
+        if (!message.trim()) return toast("Écrivez un message.", "err");
+
+        setLoading("btn-announce", true);
+        try {
+          await api("/api/announce", "POST", { guildId, channelId, message });
+          toast("Annonce envoyée !", "ok");
+          $("announceText").value = "";
+        } catch (e) {
+          toast("Erreur d'envoi.", "err");
+        } finally {
+          setLoading("btn-announce", false);
         }
       }
 
@@ -2033,6 +2374,150 @@
         }
       }
 
+
+      async function loadRoles() {
+        const gid = $("guildServers").value;
+        if (!gid) return;
+        try {
+          const { roles } = await api(`/api/guild-roles/${gid}`);
+          allRoles = roles;
+          renderRoleManager(roles);
+          // Also update self-service if on that page
+          const configRes = await api("/api/guild-config/" + gid);
+          renderSelfRoles(roles, configRes.config.selfRoles || []);
+        } catch (e) {
+          console.error("loadRoles error", e);
+          toast("Erreur de chargement des rôles.", "err");
+        }
+      }
+
+      function renderRoleManager(roles) {
+        const list = $("roleManagerList");
+        list.innerHTML = "";
+        if (!roles.length) {
+          list.innerHTML = `<div class="empty">Aucun rôle à gérer.</div>`;
+          return;
+        }
+
+        roles.forEach(r => {
+          const div = document.createElement("div");
+          div.className = "ilist-item";
+          div.style = "display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid var(--line);";
+          div.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 14px; height: 14px; border-radius: 50%; background: ${r.color || '#99aab5'}; border: 1px solid rgba(255,255,255,0.1);"></div>
+              <div style="font-weight: 600; font-size: 14px;">${r.name}</div>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              ${r.editable ? `
+                <button class="role-action-btn" onclick="openRoleModal('${r.id}')" title="Modifier"><i class="fas fa-edit"></i></button>
+                <button class="role-action-btn del" onclick="deleteRole('${r.id}')" title="Supprimer"><i class="fas fa-trash"></i></button>
+              ` : `
+                <span style="font-size: 10px; color: var(--muted); border: 1px solid var(--line); padding: 4px 8px; border-radius: 4px;">Lecture seule</span>
+              `}
+            </div>
+          `;
+          list.appendChild(div);
+        });
+      }
+
+      function openRoleModal(roleId = null) {
+        $("roleModal").style.display = "flex";
+        $("editRoleId").value = roleId || "";
+        if (roleId) {
+          const role = allRoles.find(r => r.id === roleId);
+          $("roleModalTitle").textContent = "Modifier le rôle";
+          $("roleNameInput").value = role.name;
+          $("roleColorInput").value = role.color.startsWith("#") ? role.color : "#99aab5";
+          $("roleColorHex").value = role.color;
+          $("roleHoistInput").checked = role.hoist;
+        } else {
+          $("roleModalTitle").textContent = "Créer un rôle";
+          $("roleNameInput").value = "";
+          $("roleColorInput").value = "#99aab5";
+          $("roleColorHex").value = "#99aab5";
+          $("roleHoistInput").checked = false;
+        }
+      }
+
+      function closeRoleModal() {
+        $("roleModal").style.display = "none";
+      }
+
+      async function saveRoleAction() {
+        const gid = $("guildServers").value;
+        const rid = $("editRoleId").value;
+        const name = $("roleNameInput").value;
+        const color = $("roleColorHex").value;
+        const hoist = $("roleHoistInput").checked;
+
+        if (!name.trim()) return toast("Le nom est requis.", "err");
+
+        setLoading("btn-save-role-action", true);
+        try {
+          if (rid) {
+            await api(`/api/guild-roles/${gid}/${rid}`, "PATCH", { name, color, hoist });
+            toast("Rôle mis à jour !", "ok");
+          } else {
+            await api(`/api/guild-roles/${gid}`, "POST", { name, color, hoist });
+            toast("Rôle créé !", "ok");
+          }
+          closeRoleModal();
+          loadRoles();
+        } catch (e) {
+          toast("Erreur lors de l'action.", "err");
+        } finally {
+          setLoading("btn-save-role-action", false);
+        }
+      }
+
+      async function deleteRole(roleId) {
+        if (!confirm("Êtes-vous sûr de vouloir supprimer ce rôle ?")) return;
+        const gid = $("guildServers").value;
+        try {
+          await api(`/api/guild-roles/${gid}/${roleId}`, "DELETE");
+          toast("Rôle supprimé !", "ok");
+          loadRoles();
+        } catch (e) {
+          toast("Erreur lors de la suppression.", "err");
+        }
+      }
+
+      async function loadLeaderboard() {
+        const gid = $("guildServers").value;
+        if (!gid) return;
+        const grid = $("lbGrid");
+        grid.innerHTML = `<div class="empty">Chargement du classement...</div>`;
+        try {
+          const { leaderboard } = await api(`/api/guild-leaderboard/${gid}`);
+          grid.innerHTML = "";
+          if (!leaderboard || !leaderboard.length) {
+            grid.innerHTML = `<div class="empty">Aucune donnée XP pour ce serveur.</div>`;
+            return;
+          }
+          leaderboard.forEach(u => {
+            const rankCls = u.rank <= 3 ? `top-${u.rank}` : "";
+            const avatar = u.avatar || "https://cdn.discordapp.com/embed/avatars/0.png";
+            const div = document.createElement("div");
+            div.className = "lb-item";
+            div.innerHTML = `
+              <div class="lb-rank ${rankCls}">${u.rank === 1 ? '🥇' : (u.rank === 2 ? '🥈' : (u.rank === 3 ? '🥉' : u.rank))}</div>
+              <img src="${avatar}" class="lb-avatar" alt="Avatar">
+              <div class="lb-info">
+                <div class="lb-name">${u.name}</div>
+                <div class="lb-meta">
+                  <span>Niveau <b>${u.level}</b></span>
+                  <span><b>${u.xp}</b> XP</span>
+                </div>
+              </div>
+            `;
+            grid.appendChild(div);
+          });
+        } catch (e) {
+          console.error("Leaderboard error", e);
+          grid.innerHTML = `<div class="empty">Erreur de chargement.</div>`;
+        }
+      }
 
       (async () => {
         try {
