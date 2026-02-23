@@ -1,5 +1,5 @@
 const { Events, EmbedBuilder } = require("discord.js");
-const { getGuildConfig } = require("../config-store");
+const { getGuildConfig } = require("../core/config-store");
 
 module.exports = {
     name: Events.GuildMemberRemove,

@@ -1,6 +1,6 @@
 const { Events, EmbedBuilder } = require("discord.js");
-const xpStore = require("../xp-store");
-const { getGuildConfig } = require("../config-store");
+const xpStore = require("../core/xp-store");
+const { getGuildConfig } = require("../core/config-store");
 const { syncMemberRoles } = require("../utils/activity-guard");
 
 // XP gained per message: random between 15 and 25

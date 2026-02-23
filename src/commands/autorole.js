@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
-const configStore = require("../config-store");
+const configStore = require("../core/config-store");
 
 module.exports = {
     category: "Administration",

@@ -11,7 +11,7 @@ if (!DISCORD_TOKEN || !CLIENT_ID || (!GUILD_ID && DEPLOY_GLOBAL !== "true")) {
 
 const isGlobal = DEPLOY_GLOBAL === "true";
 const commands = [];
-const commandsPath = path.join(__dirname, "commands");
+const commandsPath = path.join(__dirname, "../src/commands");
 const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {

@@ -1,12 +1,57 @@
-node_modules
-.env
-data
-.gemini
-.agents
-.agent
+# --- Node.js ---
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.DS_Store
+.pnpm-debug.log*
+package-lock.json
+
+# --- Documentation ---
 *.md
 !README.md
+LICENSE
+
+# --- Environment & Secrets ---
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+auth.json
+config.json
+
+# --- Local Data ---
+data/
+db.sqlite
+*.log
+.database/
+
+# --- IDEs & Editors ---
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# --- OS Specific ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Docker ---
+Dockerfile
+docker-compose.yml
+.git/
+.gitignore
+.dockerignore
+
+# --- Agent specific ---
+.gemini/
+.agents/
+.agent/
+brain/
+implementation_plan.md
+walkthrough.md
+task.md

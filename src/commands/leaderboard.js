@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const xpStore = require("../xp-store");
+const xpStore = require("../core/xp-store");
 
 const MEDALS = ["🥇", "🥈", "🥉"];
 

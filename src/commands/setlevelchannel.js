@@ -1,13 +1,13 @@
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
-const { updateGuildConfig } = require("../config-store");
+const { updateGuildConfig } = require("../core/config-store");
 
 module.exports = {
     category: "Administration",
     data: new SlashCommandBuilder()
-        .setName("setwelcome")
-        .setDescription("Configure le salon et le message de bienvenue")
+        .setName("setlevelchannel")
+        .setDescription("Configure le salon des annonces de niveau supérieur")
         .addChannelOption(o =>
-            o.setName("salon").setDescription("Salon où envoyer les messages de bienvenue (vide = désactiver)").setRequired(false)
+            o.setName("salon").setDescription("Salon où envoyer les messages de level-up (vide = salon actuel)").setRequired(false)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 
@@ -15,11 +15,11 @@ module.exports = {
         const channel = interaction.options.getChannel("salon");
 
         if (!channel) {
-            updateGuildConfig(interaction.guild.id, { welcomeChannel: "" });
+            updateGuildConfig(interaction.guild.id, { levelChannel: "" });
             const embed = new EmbedBuilder()
                 .setColor(0xf5a623)
-                .setTitle("⚙️ Welcome désactivé")
-                .setDescription("Les messages de bienvenue ont été **désactivés**.");
+                .setTitle("⚙️ Level Channel réinitialisé")
+                .setDescription("Les annonces de niveau seront envoyées dans le **salon actuel**.");
             return interaction.reply({ embeds: [embed], ephemeral: true });
         }
 
@@ -30,12 +30,12 @@ module.exports = {
             return interaction.reply({ embeds: [embed], ephemeral: true });
         }
 
-        updateGuildConfig(interaction.guild.id, { welcomeChannel: channel.id });
+        updateGuildConfig(interaction.guild.id, { levelChannel: channel.id });
 
         const embed = new EmbedBuilder()
             .setColor(0x3ecf8e)
-            .setTitle("✅ Welcome configuré")
-            .setDescription(`Les messages de bienvenue seront envoyés dans ${channel}.`)
+            .setTitle("✅ Level Channel configuré")
+            .setDescription(`Les annonces de niveau seront envoyées dans ${channel}.`)
             .setTimestamp();
 
         return interaction.reply({ embeds: [embed], ephemeral: true });

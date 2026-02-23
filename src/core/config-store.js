@@ -1,7 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 
-const DATA_DIR = path.join(__dirname, "data");
+const DATA_DIR = path.join(__dirname, "../../data");
 const CONFIG_FILE = path.join(DATA_DIR, "guild-configs.json");
 
 const DEFAULT_CONFIG = {

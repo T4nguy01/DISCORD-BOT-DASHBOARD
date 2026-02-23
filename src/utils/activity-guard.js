@@ -1,5 +1,5 @@
-const configStore = require("../config-store");
-const xpStore = require("../xp-store");
+const configStore = require("../core/config-store");
+const xpStore = require("../core/xp-store");
 
 /**
  * Syncs the 'Active' and 'Inactive' roles for a member based on their last activity.

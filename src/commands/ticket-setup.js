@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require("discord.js");
-const configStore = require("../config-store");
+const configStore = require("../core/config-store");
 
 module.exports = {
     category: "Administration",

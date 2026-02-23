@@ -2,10 +2,10 @@
   "name": "discord-slash-bot",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "start": "node index.js",
-    "deploy": "node deploy-commands.js"
+    "start": "node src/index.js",
+    "deploy": "node scripts/deploy-commands.js"
   },
   "dependencies": {
     "@ffmpeg-installer/ffmpeg": "^1.1.0",

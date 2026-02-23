@@ -3,10 +3,10 @@ const cron = require("node-cron");
 const { Client, Collection, Events, GatewayIntentBits } = require("discord.js");
 const fs = require("node:fs");
 const path = require("node:path");
-const { startDashboard } = require("./dashboard-server");
-const { isCommandEnabled } = require("./config-store");
-const telemetry = require("./telemetry");
-const { recordActivity } = require("./xp-store");
+const { startDashboard } = require("./core/dashboard-server");
+const { isCommandEnabled } = require("./core/config-store");
+const telemetry = require("./core/telemetry");
+const { recordActivity } = require("./core/xp-store");
 const { syncMemberRoles, syncAllGuildMembers } = require("./utils/activity-guard");
 
 const client = new Client({

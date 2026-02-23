@@ -50,7 +50,7 @@ function startDashboard(client) {
   const requiredApiKey = process.env.DASHBOARD_API_KEY || "";
 
   app.use(express.json());
-  app.use(express.static(path.join(__dirname, "dashboard")));
+  app.use(express.static(path.join(__dirname, "../../dashboard")));
 
   app.get("/api/health", (_req, res) => {
     res.json({ ok: true });

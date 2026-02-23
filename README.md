@@ -70,6 +70,28 @@ Un bot Discord multifonctions avec un dashboard web moderne et élégant pour pi
 
 ---
 
+---
+
+## 📂 Structure du Projet
+
+```text
+.
+├── dashboard/          # Interface web (frontend statique)
+├── data/               # Données persistantes (JSON, SQLite)
+├── scripts/            # Scripts utilitaires (déploiement, etc.)
+├── src/                # Code source principal
+│   ├── commands/       # Commandes Slash Discord
+│   ├── core/           # Logique centrale (dashboard, config, xp)
+│   ├── events/         # Gestionnaires d'événements Discord
+│   ├── utils/          # Fonctions utilitaires
+│   └── index.js        # Point d'entrée du Bot
+├── Dockerfile          # Configuration Docker
+├── docker-compose.yml  # Orchestration Docker
+└── package.json        # Dépendances et scripts
+```
+
+---
+
 ## 🛠️ Stack Technique
 
 - **Backend** : Node.js, Discord.js v14, Express.

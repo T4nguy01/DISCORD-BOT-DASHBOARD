@@ -1,7 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 
-const FILE = path.join(__dirname, "data", "xp.json");
+const FILE = path.join(__dirname, "../../data", "xp.json");
 
 // Mee6-style XP required to reach level n
 function xpForLevel(level) {

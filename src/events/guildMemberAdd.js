@@ -1,5 +1,5 @@
 const { Events } = require("discord.js");
-const configStore = require("../config-store");
+const configStore = require("../core/config-store");
 
 module.exports = {
     name: Events.GuildMemberAdd,

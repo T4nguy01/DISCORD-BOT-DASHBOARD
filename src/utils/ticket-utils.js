@@ -1,5 +1,5 @@
 const { ChannelType, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const configStore = require("../config-store");
+const configStore = require("../core/config-store");
 
 /**
  * Creates a support ticket channel for a user.
