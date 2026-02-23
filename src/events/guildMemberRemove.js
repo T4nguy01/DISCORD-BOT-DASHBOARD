@@ -18,7 +18,9 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor(0xf04e6a)
             .setTitle(`👋 Au revoir !`)
-            .setDescription(`**${user.tag}** a quitté le serveur. On ne l'oubliera pas !`)
+            .setDescription((cfg.byeMessage || "**{user}** a quitté le serveur. On ne l'oubliera pas !")
+                .replace("{user}", user.tag)
+                .replace("{guild}", guild.name))
             .setThumbnail(user.displayAvatarURL({ size: 256 }))
             .addFields(
                 { name: "👤 Utilisateur", value: `${user.tag}`, inline: true },

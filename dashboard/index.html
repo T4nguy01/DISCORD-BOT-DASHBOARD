@@ -1267,10 +1267,25 @@
             </select>
           </div>
         </div>
+        <div style="display:grid;grid-template-columns: 1fr 1fr; gap:14px; margin-top:20px">
+          <div class="field">
+            <label>Message de Bienvenue</label>
+            <textarea id="welcomeMessage" placeholder="Bienvenue {user} sur {guild} !"
+              style="height: 80px; min-height: 80px; border-radius: var(--rs); padding: 12px; font-family: inherit; font-size: 14px; background: rgba(0,0,0,0.2); border: 1px solid var(--line); color: #fff; resize: vertical;"></textarea>
+            <p style="font-size:10px; color:var(--muted); margin-top:4px">Variables: {user} (mention), {guild} (nom du
+              serveur)</p>
+          </div>
+          <div class="field">
+            <label>Message d'Au revoir</label>
+            <textarea id="byeMessage" placeholder="Au revoir {user} !"
+              style="height: 80px; min-height: 80px; border-radius: var(--rs); padding: 12px; font-family: inherit; font-size: 14px; background: rgba(0,0,0,0.2); border: 1px solid var(--line); color: #fff; resize: vertical;"></textarea>
+            <p style="font-size:10px; color:var(--muted); margin-top:4px">Variables: {user} (nom), {guild} (nom du
+              serveur)</p>
+          </div>
+        </div>
         <div class="btn-row" style="margin-top:20px">
           <button class="btn-primary" id="btn-save-guild" onclick="saveGuildConfig()"><i class="fas fa-save"></i>
-            Enregistrer
-            la configuration</button>
+            Enregistrer la configuration</button>
         </div>
       </div>
 
@@ -1665,6 +1680,8 @@
           $("autoRoleToggle").checked = config.autoRoleEnabled || false;
           $("autoRoleStatus").textContent = config.autoRoleEnabled ? "Activé" : "Désactivé";
           $("announceChannel").value = config.announceChannelId || "";
+          $("welcomeMessage").value = config.welcomeMessage || "";
+          $("byeMessage").value = config.byeMessage || "";
 
 
           // Populate multi-select for selfRoles
@@ -1748,6 +1765,8 @@
             byeChannel: $("byeChannel").value,
             levelChannel: $("levelChannel").value,
             logChannel: $("logChannel").value,
+            welcomeMessage: $("welcomeMessage").value,
+            byeMessage: $("byeMessage").value,
           };
           await api(`/api/guild-config/${guildId}`, "POST", { config });
           toast("Paramètres généraux enregistrés.", "ok");

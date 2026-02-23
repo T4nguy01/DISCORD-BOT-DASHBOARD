@@ -10,6 +10,8 @@ const DEFAULT_CONFIG = {
   logChannelId: "",
   welcomeChannel: "",
   byeChannel: "",
+  welcomeMessage: "Bienvenue {user} sur **{guild}** ! 🎉",
+  byeMessage: "**{user}** a quitté le serveur. Au revoir ! 👋",
   levelChannel: "",
   language: "fr",
   disabledCommands: [],
