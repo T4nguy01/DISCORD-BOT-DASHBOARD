@@ -107,7 +107,11 @@ module.exports = (client) => ({
     },
 
     getBotSummary: (req, res) => {
-        res.json({ summary: telemetry.getSummary(client) });
+        const pkg = require("../../package.json");
+        res.json({
+            summary: telemetry.getSummary(client),
+            version: pkg.version
+        });
     },
 
     getChannels: (req, res) => {

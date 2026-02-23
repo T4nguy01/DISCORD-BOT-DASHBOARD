@@ -1107,7 +1107,7 @@
       <div class="sb-icon"><i class="fas fa-robot"></i></div>
       <div>
         <div class="sb-name">LAB-BOT</div>
-        <div class="sb-sub">v3.1.2 PRO</div>
+        <div class="sb-sub" id="botVersion">v1.0.0</div>
       </div>
     </div>
     <div class="sb-online">
@@ -1117,7 +1117,7 @@
     <div class="sb-nav">
       <div class="nav-sec">Principal</div>
       <div class="nav-item active" data-page="overview"><i class="ico fas fa-chart-line"></i> Vue d'ensemble</div>
-      <div class="nav-item" data-page="events"><i class="ico fas fa-activity"></i> Événements</div>
+      <div class="nav-item" data-page="events"><i class="ico fas fa-bolt"></i> Événements</div>
 
       <div class="nav-sec">Configuration</div>
       <div class="nav-item" data-page="settings"><i class="ico fas fa-cogs"></i> Général</div>
@@ -1401,14 +1401,18 @@
       <h3 class="section-title"><i class="fas fa-tags"></i> Rôles en Libre-Service</h3>
       <div class="card">
         <div class="field">
-          <label>Rôles disponibles (Maintenez Ctrl pour en choisir plusieurs)</label>
-          <select id="selfRoles" multiple style="height: 120px">
-            <option value="">Chargement...</option>
-          </select>
+          <label>Rôles disponibles pour les membres</label>
+          <div class="cmd-search">
+            <input type="text" id="roleFilter" placeholder="Filtrer les rôles..." oninput="filterRoles()" />
+          </div>
+          <div class="role-grid" id="selfRolesGrid"
+            style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; max-height: 300px; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.2); border-radius: var(--rs); border: 1px solid var(--line);">
+            <!-- Roles will be rendered here -->
+            <div class="empty">Chargement des rôles...</div>
+          </div>
           <div class="btn-row" style="margin-top:16px">
             <button class="btn-primary" id="btn-save-selfroles" onclick="saveSelfRolesConfig()"><i
-                class="fas fa-save"></i> Enregistrer les
-              rôles</button>
+                class="fas fa-save"></i> Enregistrer la sélection</button>
           </div>
         </div>
       </div>
@@ -1499,6 +1503,9 @@
 
     <script>
       const $ = id => document.getElementById(id);
+      let allRoles = [];
+      let selectedRoles = [];
+
       // Toasts
       function toast(msg, type = "info") {
         const wrap = $("toast-wrap");
@@ -1651,11 +1658,8 @@
 
           await loadChannels(gid);
 
-          const { roles } = await api("/api/guild-roles/" + gid);
-          const roleOps = '<option value="">Aucun</option>' + roles.map(r => `<option value="${r.id}">${r.name}</option>`).join("");
-          $("activeRole").innerHTML = roleOps;
-          $("inactiveRole").innerHTML = roleOps;
-          $("ticketSupportRole").innerHTML = roleOps;
+          allRoles = roles;
+          renderSelfRoles(roles, config.selfRoles || []);
 
           const { categories } = await api("/api/guild-categories/" + gid);
           const catOps = '<option value="">Sélectionner une catégorie</option>' + categories.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
@@ -1663,7 +1667,15 @@
 
           $("selfRoles").innerHTML = roleOps.replace('Aucun', 'Sélectionner les rôles');
 
-          $("autoRole").innerHTML = roleOps;
+          $("autoRole").innerHTML = '<option value="">Aucun</option>' + roles.map(r => `<option value="${r.id}">${r.name}</option>`).join("");
+          $("autoRole").value = config.autoRoleId || "";
+
+          // Re-populate standard role selectors
+          const roleOps = '<option value="">Aucun</option>' + roles.map(r => `<option value="${r.id}">${r.name}</option>`).join("");
+          ["activeRole", "inactiveRole", "ticketSupportRole"].forEach(id => {
+            const el = $(id);
+            if (el) { el.innerHTML = roleOps; el.value = config[id + "Id"] || config[id.replace("Role", "RoleId")] || ""; }
+          });
 
           const { config } = await api("/api/guild-config/" + gid);
           $("welcomeChannel").value = config.welcomeChannel || "";
@@ -1795,6 +1807,54 @@
         }
       }
 
+      function renderSelfRoles(roles, selectedIds) {
+        selectedRoles = selectedIds || [];
+        const grid = $("selfRolesGrid");
+        grid.innerHTML = "";
+        if (!roles.length) {
+          grid.innerHTML = `<div class="empty">Aucun rôle trouvé.</div>`;
+          return;
+        }
+
+        roles.forEach(role => {
+          const isSelected = selectedRoles.includes(role.id);
+          const div = document.createElement("div");
+          div.className = "role-card-mini";
+          div.dataset.name = role.name.toLowerCase();
+          div.style = `
+            display: flex; align-items: center; gap: 8px; padding: 8px; 
+            background: rgba(255,255,255,${isSelected ? '0.1' : '0.03'}); 
+            border: 1px solid ${isSelected ? 'var(--brand)' : 'var(--line)'}; 
+            border-radius: 8px; cursor: pointer; transition: all 0.2s;
+          `;
+          div.innerHTML = `
+            <input type="checkbox" ${isSelected ? 'checked' : ''} style="pointer-events: none;">
+            <span style="font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${role.name}</span>
+          `;
+          div.onclick = () => {
+            const idx = selectedRoles.indexOf(role.id);
+            if (idx > -1) {
+              selectedRoles.splice(idx, 1);
+              div.style.background = "rgba(255,255,255,0.03)";
+              div.style.borderColor = "var(--line)";
+              div.querySelector("input").checked = false;
+            } else {
+              selectedRoles.push(role.id);
+              div.style.background = "rgba(255,255,255,0.1)";
+              div.style.borderColor = "var(--brand)";
+              div.querySelector("input").checked = true;
+            }
+          };
+          grid.appendChild(div);
+        });
+      }
+
+      function filterRoles() {
+        const q = $("roleFilter").value.toLowerCase();
+        document.querySelectorAll("#selfRolesGrid .role-card-mini").forEach(r => {
+          r.style.display = r.dataset.name.includes(q) ? "flex" : "none";
+        });
+      }
       async function saveTicketConfig() {
         const gid = $("guildServers").value;
         if (!gid) return;
@@ -1886,7 +1946,8 @@
 
       // Live Metrics Refresh
       async function refreshStats() {
-        const { summary } = await api("/api/bot/summary");
+        const { summary, version } = await api("/api/bot/summary");
+        if (version) $("botVersion").textContent = "v" + version;
 
         // Top bar & metrics
         $("uptime").textContent = summary.uptimeSec ? formatSec(summary.uptimeSec) : "--";
